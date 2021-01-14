@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class LoginScreen extends StatefulWidget{
+String kashif;
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
   }
 class _LoginScreenState extends State<_LoginScreenState>{
-
   bool isRememberMe = false;
 
   Widget build(BuildContext context){
