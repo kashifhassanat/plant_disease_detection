@@ -5,7 +5,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-String username;
+String usernam;
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
