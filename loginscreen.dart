@@ -1,29 +1,27 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class LoginScreen extends StatefulWidget{
-String kashif;
 
+  class LoginScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
-  }
-class _LoginScreenState extends State<_LoginScreenState>{
+  _State createState() => _State();
+}
+class _State extends State<LoginScreen>{
+
   bool isRememberMe = false;
 
-  Widget build(BuildContext context){
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("lib/images/main.png")
-                fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget build(BuildContext context){
+  //   return Scaffold(
+  //     body: Container(
+  //       decoration: BoxDecoration(
+  //         image: DecorationImage(
+  //           image: AssetImage("lib/images/main.png"),
+  //               fit: BoxFit.cover,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget buildEmail(){
     return Column(
@@ -254,20 +252,14 @@ class _LoginScreenState extends State<_LoginScreenState>{
           child: Stack(
             children: <Widget>[
               Container(
+                
                 height: double.infinity,
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color( 0x655ac18e),
-                      Color( 0x995ac18e),
-                      Color( 0xcc5ac18e),
-                      Color( 0xff5ac18e),
-                    ]
-                  )
-                ),
+               decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('images/main.png'), fit: BoxFit.cover),
+
+              ),
                 child: SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.symmetric(
@@ -304,5 +296,5 @@ class _LoginScreenState extends State<_LoginScreenState>{
         ),
       ),
     );
-  },
-},
+  }
+}
