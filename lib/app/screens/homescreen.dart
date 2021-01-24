@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:plant_disease_detection/app/screens/detectimage.dart';
+import 'package:plant_disease_detection/app/services/auth.dart';
 
 
 class HomeScreen extends StatefulWidget {
 
+   final AuthBase auth;
   final String title;
-  HomeScreen({String uid, this.title});
+  HomeScreen({@required this.auth, String uid, this.title});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -77,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                       this.context,
                       new MaterialPageRoute(
-                          builder: (context) => new HomeScreen()));
+                          builder: (context) => new HomeScreen(auth: Auth())));
                 },
               ),
               ListTile(

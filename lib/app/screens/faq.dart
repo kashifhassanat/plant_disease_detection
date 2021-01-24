@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plant_disease_detection/app/common_widget/CustomRaisedButton.dart';
+import 'package:plant_disease_detection/app/services/auth.dart';
 
 import 'homescreen.dart';
 
 class Faq extends StatefulWidget {
-  static User user;
+ 
   @override
   _FaqState createState() => _FaqState();
 }
@@ -197,7 +197,7 @@ class _FaqState extends State<Faq> {
                               }).whenComplete(
                                 () => Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return HomeScreen();
+                                  return HomeScreen(auth: Auth(),);
                                 })),
                               );
                             }),
