@@ -1,11 +1,14 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:plant_disease_detection/app/screens/detectimage.dart';
+import 'package:plant_disease_detection/app/screens/profile.dart';
 import 'package:plant_disease_detection/app/services/auth.dart';
 
 
@@ -23,6 +26,22 @@ class _HomeScreenState extends State<HomeScreen> {
  
   final GlobalKey<ScaffoldState> _drawerscaffoldkey =
       new GlobalKey<ScaffoldState>();
+
+  Future<DocumentSnapshot> getUserInfo() async {
+    var firebaseUser = await FirebaseAuth.instance.currentUser();
+    return await Firestore.instance
+        .collection("users")
+        .document(firebaseUser.uid)
+        .get();
+  }
+  Future<void> _signOut() async {
+    try {
+    
+       await widget.auth.signOut();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           FlatButton(
-            onPressed: ()=>{},
+            onPressed: _signOut,
             child: Text(
               "Log Out",
               style: TextStyle(
@@ -64,11 +83,61 @@ class _HomeScreenState extends State<HomeScreen> {
         key: _drawerscaffoldkey,
         drawer: Drawer(
             child: SingleChildScrollView(
-          child: Container(
-            color: Colors.lightGreen[100],
-            height: MediaQuery.of(this.context).size.height,
-            width: double.infinity,
-            child: ListView(children: <Widget>[
+          child: FutureBuilder(
+          future: getUserInfo(),
+          builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(children: [
+                      Container(
+                        color: Colors.lightGreen[100],
+                        height: MediaQuery.of(this.context).size.height,
+                        width: double.infinity,
+                        child: ListView(children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  this.context,
+                                  new MaterialPageRoute(
+                                      builder: (context) =>
+                                          new Profile(auth: Auth())));
+                            },
+                            child: UserAccountsDrawerHeader(
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                              ),
+                              accountEmail: null,
+                              accountName: Container(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Welcome ',
+                                      style: TextStyle(
+                                          fontSize: 21,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.yellowAccent),
+                                    ),
+                                    Text(
+                                      snapshot.data.data["fname"],
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.yellowAccent),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              currentAccountPicture: CircleAvatar(
+                                backgroundColor: Colors.green,
+                                backgroundImage: AssetImage(
+                                  'images/farm.png',
+                                ),
+                              ),
+                            ),
+                          ),
               ListTile(
                 title: Text(
                   "Home",
@@ -103,11 +172,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       new MaterialPageRoute(
                           builder: (context) =>
                               new DetectImage()));
-                },
-              )
-            ]),
-          ),
-        )),
+                  },
+                          ),
+                        ]),
+                      ),
+                    ]);
+                  });
+            } else if (snapshot.connectionState == ConnectionState.none) {
+              return Text("No data");
+            }
+            return CircularProgressIndicator();
+          },
+        ))),
         body: ListView(
           children: <Widget>[  
             SizedBox(
